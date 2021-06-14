@@ -6,9 +6,10 @@ install: true
 addons:
   sonarcloud:
     organization: $SONAR_ORGANIZATION
-    token: $SONAR_TOKEN
+    token:
+      secure: $SONAR_TOKEN
 script:
-  - mvn clean package sonar:sonar -P sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=murilohenzo_bookstore-manager
 cache:
   directories:
     - $HOME/.m2
