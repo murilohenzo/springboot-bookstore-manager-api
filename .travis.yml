@@ -5,7 +5,7 @@ jdk: openjdk16
 install: true
 addons:
   sonarcloud:
-    organization: murilohenzo
+    organization: bookstore-manager
     token:
       secure: b8475247247169a743e1c6815d7a9dbcd65c41b6 # encrypted value of your token
 
