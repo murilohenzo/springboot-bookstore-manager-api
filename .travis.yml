@@ -5,10 +5,12 @@ jdk: openjdk16
 install: true
 addons:
   sonarcloud:
-    organization: $SONAR_ORGANIZATION
+    organization: murilohenzo
     token:
-      secure: $SONAR_TOKEN
+      secure: fcde05fb8e2184d25b32bae73413aaf8867beab7 # encrypted value of your token
+
 script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=murilohenzo_bookstore-manager
 cache:
   directories:
