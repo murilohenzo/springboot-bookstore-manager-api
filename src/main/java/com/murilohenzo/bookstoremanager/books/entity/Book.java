@@ -1,6 +1,7 @@
 package com.murilohenzo.bookstoremanager.books.entity;
 
 import com.murilohenzo.bookstoremanager.author.entity.Author;
+import com.murilohenzo.bookstoremanager.entity.Auditable;
 import com.murilohenzo.bookstoremanager.publishers.entity.Publisher;
 import com.murilohenzo.bookstoremanager.users.entity.User;
 import lombok.Data;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Book {
+public class Book extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
