@@ -1,21 +1,26 @@
 spring:
+  # Database
   datasource:
-    url: jdbc:h2:mem:bookstore_dev;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    # url de conexão do banco de dados
+    url: jdbc:mysql://localhost/bookstore_db?useTimezone=true&serverTimezone=America/Sao_Paulo
+    # usuário e senha de conexão com o banco de dados
+    username: root
+    password: 12345
+  # JPA properties
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    # deixamos o hibernate responsável por ler nossas entidades e criar as tabelas do nosso banco de dados automaticamente
+    hibernate:
+      ddl-auto: update
+    database: MYSQL
     show-sql: true
-    properties:
-      hibernate:
-      format_sql: true
-  h2:
-    console:
-      enabled: true
+    generate-ddl: true
 
+# Logger configuration
 logging:
   level:
     br:
       com:
         murilohenzo: DEBUG
+# Server configuration
+server:
+  port: 8080 #set your port
