@@ -3,6 +3,7 @@ package com.murilohenzo.bookstoremanager.services;
 import com.murilohenzo.bookstoremanager.dtos.AuthorDTO;
 import com.murilohenzo.bookstoremanager.entities.Author;
 import com.murilohenzo.bookstoremanager.exceptions.AuthorAlreadyExistsException;
+import com.murilohenzo.bookstoremanager.exceptions.AuthorNotFoundException;
 import com.murilohenzo.bookstoremanager.mappers.AuthorMapper;
 import com.murilohenzo.bookstoremanager.repositories.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -25,15 +26,17 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public Optional<Author> findById(Long id) {
-        return authorRepository.findById(id);
-    }
-
     public AuthorDTO create(AuthorDTO authorDTO) {
         existsAuthor(authorDTO.getName());
         Author authorToCreate = authorMapper.toModel(authorDTO);
         Author createdAuthor = authorRepository.save(authorToCreate);
         return authorMapper.toDTO(createdAuthor);
+    }
+
+    public AuthorDTO findById(Long id) {
+       Author foundAuthor = authorRepository.findById(id)
+                .orElseThrow(()-> new AuthorNotFoundException(id));
+       return authorMapper.toDTO(foundAuthor);
     }
 
     private void existsAuthor(String authorName) {

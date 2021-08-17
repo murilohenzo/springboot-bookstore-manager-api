@@ -27,7 +27,7 @@ public class AuthorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create Author", notes = "This method creates a new author")
+    @ApiOperation(value = "Create author", notes = "This method creates a new author")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Success author creation"),
             @ApiResponse(code = 400, message = "Missing required fields, wrong field range value or author already existing on system."),
@@ -35,4 +35,13 @@ public class AuthorController {
     public AuthorDTO create(@RequestBody  @Valid AuthorDTO authorDTO) {
         return authorService.create(authorDTO);
     }
+    
+    @GetMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ApiOperation(value = "Find author by Id", notes = "This method find a author")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success author found"),
+            @ApiResponse(code = 400, message = "Missing required params id, wrong id range value or author not existing on system."),
+    })
+    public AuthorDTO findById(@RequestParam @Valid Long id) { return authorService.findById(id); }
 }

@@ -4,6 +4,7 @@ import com.murilohenzo.bookstoremanager.author.builder.AuthorDTOBuilder;
 import com.murilohenzo.bookstoremanager.dtos.AuthorDTO;
 import com.murilohenzo.bookstoremanager.entities.Author;
 import com.murilohenzo.bookstoremanager.exceptions.AuthorAlreadyExistsException;
+import com.murilohenzo.bookstoremanager.exceptions.AuthorNotFoundException;
 import com.murilohenzo.bookstoremanager.mappers.AuthorMapper;
 import com.murilohenzo.bookstoremanager.repositories.AuthorRepository;
 import com.murilohenzo.bookstoremanager.services.AuthorService;
@@ -68,5 +69,31 @@ public class AuthorServiceTest {
 
         //then
         assertThrows(AuthorAlreadyExistsException.class, () -> authorService.create(expectedAuthorToCreateDTO));
+    }
+
+    @Test
+    void whenValidIdIsGivenThenAnAuthorShouldBeReturned() {
+        //given
+        AuthorDTO expectedFoundAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+        Author expectedFoundAuthor = authorMapper.toModel(expectedFoundAuthorDTO);
+
+        //when
+        when(authorRepository.findById(expectedFoundAuthorDTO.getId())).thenReturn(Optional.of(expectedFoundAuthor));
+
+        //then
+        AuthorDTO foundAuthorDTO = authorService.findById(expectedFoundAuthorDTO.getId());
+        assertThat(foundAuthorDTO, is(equalTo(expectedFoundAuthorDTO)));
+    }
+
+    @Test
+    void whenInvalidIdIsGivenThenAnExceptionShouldBeThrown() {
+        //given
+        AuthorDTO expectedFoundAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+
+        //when
+        when(authorRepository.findById(expectedFoundAuthorDTO.getId())).thenReturn(Optional.empty());
+
+        //then
+        assertThrows(AuthorNotFoundException.class, ()-> authorService.findById(expectedFoundAuthorDTO.getId()));
     }
 }
