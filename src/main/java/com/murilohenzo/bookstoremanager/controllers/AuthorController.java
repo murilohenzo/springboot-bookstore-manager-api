@@ -1,6 +1,7 @@
 package com.murilohenzo.bookstoremanager.controllers;
 
 import com.murilohenzo.bookstoremanager.dtos.AuthorDTO;
+import com.murilohenzo.bookstoremanager.entities.Author;
 import com.murilohenzo.bookstoremanager.services.AuthorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = "Authors")
 @RestController
@@ -31,9 +33,18 @@ public class AuthorController {
     public AuthorDTO create(@RequestBody  @Valid AuthorDTO authorDTO) {
         return authorService.create(authorDTO);
     }
-    
+
+    @GetMapping()
+    @ApiOperation(value = "Find authors", notes = "This method find authors")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success authors found"),
+            @ApiResponse(code = 400, message = "Authors not existing on system."),
+    })
+    public List<AuthorDTO> findAll() {
+        return authorService.findAll();
+    }
+
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Find author by Id", notes = "This method find a author")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success author found"),

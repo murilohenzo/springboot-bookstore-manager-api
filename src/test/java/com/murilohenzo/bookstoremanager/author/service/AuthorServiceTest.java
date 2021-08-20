@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.*;
@@ -95,5 +97,30 @@ public class AuthorServiceTest {
 
         //then
         assertThrows(AuthorNotFoundException.class, ()-> authorService.findById(expectedFoundAuthorDTO.getId()));
+    }
+
+    @Test
+    void whenListAuthorsIsCalledThenItShouldBeReturned() {
+        //given
+        AuthorDTO expectedFoundAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+        Author expectedFoundAuthor = authorMapper.toModel(expectedFoundAuthorDTO);
+
+        //when
+        when(authorRepository.findAll()).thenReturn(Collections.singletonList(expectedFoundAuthor));
+        List<AuthorDTO> foundAuthorsDTO = authorService.findAll();
+
+        //then
+        assertThat(foundAuthorsDTO.size(), is(1));
+        assertThat(foundAuthorsDTO.get(0), is(equalTo(expectedFoundAuthorDTO)));
+    }
+
+    @Test
+    void whenListAuthorsIsCalledThenAnEmptyListShouldBeReturned() {
+        //when
+        when(authorRepository.findAll()).thenReturn(Collections.emptyList());
+        List<AuthorDTO> foundAuthorsDTO = authorService.findAll();
+
+        //then
+        assertThat(foundAuthorsDTO.size(), is(0));
     }
 }
