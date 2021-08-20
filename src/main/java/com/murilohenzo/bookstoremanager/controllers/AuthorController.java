@@ -1,19 +1,15 @@
 package com.murilohenzo.bookstoremanager.controllers;
 
 import com.murilohenzo.bookstoremanager.dtos.AuthorDTO;
-import com.murilohenzo.bookstoremanager.entities.Author;
 import com.murilohenzo.bookstoremanager.services.AuthorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
 
 @Api(tags = "Authors")
 @RestController
@@ -36,12 +32,13 @@ public class AuthorController {
         return authorService.create(authorDTO);
     }
     
-    @GetMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Find author by Id", notes = "This method find a author")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success author found"),
             @ApiResponse(code = 400, message = "Missing required params id, wrong id range value or author not existing on system."),
     })
-    public AuthorDTO findById(@RequestParam @Valid Long id) { return authorService.findById(id); }
-}
+    public AuthorDTO findById(@PathVariable(value = "id") Long id) {
+        return authorService.findById(id);
+    } }
