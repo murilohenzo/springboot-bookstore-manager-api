@@ -52,7 +52,7 @@ public class AuthorController {
     })
     public AuthorDTO findById(@PathVariable(value = "id") Long id) {
         return authorService.findById(id);
-    } }
+    }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete author by Id", notes = "This method delete a author")
