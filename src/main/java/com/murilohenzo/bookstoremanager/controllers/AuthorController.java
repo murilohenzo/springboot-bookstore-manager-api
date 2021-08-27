@@ -53,3 +53,13 @@ public class AuthorController {
     public AuthorDTO findById(@PathVariable(value = "id") Long id) {
         return authorService.findById(id);
     } }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete author by Id", notes = "This method delete a author")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success author delete"),
+            @ApiResponse(code = 400, message = "Missing required params id, wrong id range value or author not existing on system."),
+    })
+    public void delete(@PathVariable(value = "id") Long id) {
+        authorService.delete(id);
+    } }
