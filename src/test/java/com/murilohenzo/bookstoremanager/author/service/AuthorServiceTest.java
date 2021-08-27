@@ -123,4 +123,31 @@ public class AuthorServiceTest {
         //then
         assertThat(foundAuthorsDTO.size(), is(0));
     }
+
+    @Test
+    void whenValidAuthorIdIsGivenThenItShouldBeDeleted() {
+        //given
+        AuthorDTO expectedDeleteAuthorDTO = authorDTOBuilder.buildAuthorDTO();
+        Author expectedDeleteAuthor = authorMapper.toModel(expectedDeleteAuthorDTO);
+
+        Long expectedDeleteAuthorId = expectedDeleteAuthorDTO.getId();
+        doNothing().when(authorRepository).deleteById(expectedDeleteAuthorId);
+        when(authorRepository.findById(expectedDeleteAuthorId)).thenReturn(Optional.of(expectedDeleteAuthor));
+
+        authorService.delete(expectedDeleteAuthorId);
+
+        verify(authorRepository, times(1)).deleteById(expectedDeleteAuthorId);
+        verify(authorRepository, times(1)).findById(expectedDeleteAuthorId);
+    }
+
+    @Test
+    void whenInValidAuthorIdIsGivenThenItAnExceptionShouldBeThrown() {
+        //given
+        var expectedInvalidAuthorId = 2L;
+
+        when(authorRepository.findById(expectedInvalidAuthorId)).thenReturn(Optional.empty());
+
+        assertThrows(AuthorNotFoundException.class, () -> authorService.delete(expectedInvalidAuthorId));
+    }
+
 }
